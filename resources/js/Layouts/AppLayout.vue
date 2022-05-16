@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
+import Sidebar from "../Components/Sidebar.vue"
 import { Head, Link } from '@inertiajs/inertia-vue3';
 import JetApplicationMark from '@/Jetstream/ApplicationMark.vue';
 import JetBanner from '@/Jetstream/Banner.vue';
@@ -14,6 +15,9 @@ defineProps({
 });
 
 const showingNavigationDropdown = ref(false);
+const dropdownOpen = ref(false);
+const notificationOpen = ref(false);
+
 
 const switchToTeam = (team) => {
     Inertia.put(route('current-team.update'), {
@@ -23,10 +27,11 @@ const switchToTeam = (team) => {
     });
 };
 
+
+
 const logout = () => {
     Inertia.post(route('logout'));
 };
-
 </script>
 
 <template>
@@ -50,12 +55,12 @@ const logout = () => {
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <JetNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                                <JetNavLink :href="route('dashboard')" active="route().current('dashboard')">
                                     Dashboard
                                 </JetNavLink>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <JetNavLink v-if="$page.props.is_user" :href="route('admin.index')" :active="route().current('admin.index')">
+                                <JetNavLink v-if="$page.props.is_user" :href="route('admin.index')" >
                                     Admin
                                 </JetNavLink>
                             </div>
@@ -214,7 +219,7 @@ const logout = () => {
                 <!-- Responsive Navigation Menu -->
                 <div :class="{'block': showingNavigationDropdown, 'hidden': ! showingNavigationDropdown}" class="sm:hidden">
                     <div class="pt-2 pb-3 space-y-1">
-                        <JetResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                        <JetResponsiveNavLink :href="route('dashboard')" >
                             Dashboard
                         </JetResponsiveNavLink>
                     </div>
@@ -237,11 +242,11 @@ const logout = () => {
                         </div>
 
                         <div class="mt-3 space-y-1">
-                            <JetResponsiveNavLink :href="route('profile.show')" :active="route().current('profile.show')">
+                            <JetResponsiveNavLink :href="route('profile.show')" >
                                 Profile
                             </JetResponsiveNavLink>
 
-                            <JetResponsiveNavLink v-if="$page.props.jetstream.hasApiFeatures" :href="route('api-tokens.index')" :active="route().current('api-tokens.index')">
+                            <JetResponsiveNavLink v-if="$page.props.jetstream.hasApiFeatures" :href="route('api-tokens.index')" >
                                 API Tokens
                             </JetResponsiveNavLink>
 
@@ -261,11 +266,11 @@ const logout = () => {
                                 </div>
 
                                 <!-- Team Settings -->
-                                <JetResponsiveNavLink :href="route('teams.show', $page.props.user.current_team)" :active="route().current('teams.show')">
+                                <JetResponsiveNavLink :href="route('teams.show', $page.props.user.current_team)" >
                                     Team Settings
                                 </JetResponsiveNavLink>
 
-                                <JetResponsiveNavLink v-if="$page.props.jetstream.canCreateTeams" :href="route('teams.create')" :active="route().current('teams.create')">
+                                <JetResponsiveNavLink v-if="$page.props.jetstream.canCreateTeams" :href="route('teams.create')" >
                                     Create New Team
                                 </JetResponsiveNavLink>
 

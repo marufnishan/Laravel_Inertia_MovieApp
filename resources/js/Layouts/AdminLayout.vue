@@ -21,13 +21,7 @@ const dropdownOpen = ref(false);
 const notificationOpen = ref(false);
 
 
-const switchToTeam = (team) => {
-    Inertia.put(route('current-team.update'), {
-        team_id: team.id,
-    }, {
-        preserveState: false,
-    });
-};
+
 
 
 
@@ -139,8 +133,13 @@ const logout = () => {
                 class="absolute right-0 mt-2 w-48 bg-white rounded-md overflow-hidden shadow-xl z-10">
                 <a href="#"
                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white">Profile</a>
-                    <a href="#"
+                    <a href="#" 
                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white">Admin</a>
+                        <form @submit.prevent="logout">
+                                            <JetDropdownLink as="button">
+                                                Log Out
+                                            </JetDropdownLink>
+                                        </form>
                 
             </div>
         </div>
@@ -152,11 +151,31 @@ const logout = () => {
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                     <slot name="header" />
                 </div>
+                <div class="flex mb-5">
+                            <!-- Logo -->
+                            <div class="shrink-0 flex items-center">
+                                <Link :href="route('dashboard')">
+                                    <JetApplicationMark class="block h-9 w-auto" />
+                                </Link>
+                            </div>
+
+                            <!-- Navigation Links -->
+                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                <JetNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                                    Dashboard
+                                </JetNavLink>
+                            </div>
+                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                <JetNavLink v-if="$page.props.is_user" :href="route('admin.index')" :active="route().current('admin.index')">
+                                    Admin
+                                </JetNavLink>
+                            </div>
+                        </div>
             </header>
 
             <!-- Page Content -->
             <main>
-                
+                <slot />
             </main>
             </div>
             
