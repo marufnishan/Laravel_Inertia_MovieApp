@@ -55,7 +55,7 @@ const logout = () => {
                                 </JetNavLink>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <JetNavLink v-if="$page.props.is_user" :href="route('dashboard')" :active="route().current('dashboard')">
+                                <JetNavLink v-if="$page.props.is_user" :href="route('admin.index')" :active="route().current('admin.index')">
                                     Admin
                                 </JetNavLink>
                             </div>
