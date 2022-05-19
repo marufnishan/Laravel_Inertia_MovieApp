@@ -2,7 +2,7 @@
     <AdminLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Tags Create
+                Tags Edit
             </h2>
         </template>
 
@@ -12,7 +12,7 @@
                     class="px-4 py-2 bg-green-600 hover:bg-green-800 text-white rounded">Tag Index</Link>
             </div>
             <section class="flex content-center">
-                <form @submit.prevent="storeTag">
+                <form @submit.prevent="updateTag">
                         <div class="shadow overflow-hidden sm:rounded-md">
                             <div class="px-4 py-5 bg-white sm:p-6">
                                 <div class="w-full space-y-2">
@@ -23,7 +23,7 @@
                                             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
                                     </div>
                                     <div>
-                                        <button type="submit" class="px-4 py-3 bg-indigo-500 hover:bg-indigo-700 text-white rounded">Create</button>
+                                        <button type="submit" class="px-4 py-3 bg-indigo-500 hover:bg-indigo-700 text-white rounded">Update</button>
                                     </div>
                                 </div>
                             </div>
@@ -36,15 +36,21 @@
 
 <script setup>
     import AdminLayout from '../../Layouts/AdminLayout.vue';
+    import {defineProps} from 'vue';
+
+    const props = defineProps({
+        tag: Object
+    });
+
     import {
         Link,useForm,
     } from '@inertiajs/inertia-vue3';
     const form = useForm({
-      tagName: '',
-    })
+      tagName: props.tag.tag_name,
+    });
 
-    function storeTag(){
-        form.post('/admin/tags');
+    function updateTag(){
+        form.put("/admin/tags/"+ props.tag.id);
     }
 
 </script>
