@@ -58,37 +58,26 @@
                         </div>
 
                         <div class="w-full overflow-x-auto">
-                            <table class="w-full">
-                                <thead>
-                                    <tr
-                                        class="text-md font-semibold tracking-wide text-left text-gray-900 bg-gray-100 uppercase border-b border-gray-600">
-                                        <th class="px-4 py-3">Name</th>
-                                        <th class="px-4 py-3">Slug</th>
-                                        <th class="px-4 py-3">Poster</th>
-                                        <th class="px-4 py-3">Manage</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white">
-                                    <tr v-for="cast in casts.data" :key="cast.id" class="text-gray-700">
-                                        <td class="px-4 py-3 border">
-                                            {{cast.name}}
-                                        </td>
-                                        <td class="px-4 py-3 text-ms font-semibold border">{{cast.slug}}</td>
-                                        <td class="px-4 py-3 text-ms font-semibold border">{{cast.poster_path}}</td>
-
-                                        <td class="flex justify-around px-4 py-3 text-sm border">
-                                            <Link :href="route('admin.casts.edit',cast.id)"
-                                                class="bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
-                                            Edit</Link>
-                                            <Link :href="route('admin.casts.destroy',cast.id)" method="delete"
-                                                as="button" type="button"
-                                                class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
-                                            Delete</Link>
-                                        </td>
-                                    </tr>
-                                </tbody>
-
-                            </table>
+                            <Table>
+                                <template #tableHead>
+                                    <TableHead>Name</TableHead>
+                                    <TableHead>Slug</TableHead>
+                                    <TableHead>Poster</TableHead>
+                                    <TableHead>Manage</TableHead>
+                                </template>
+                                <TableRow v-for="cast in casts.data" :key="cast.id">
+                                    <TableData>{{cast.name}}</TableData>
+                                    <TableData>{{cast.slug}}</TableData>
+                                    <TableData>{{cast.poster_path}}</TableData>
+                                    <TableData>
+                                        <div class="flex justify-around ">
+                                            <ButtonLink :link="route('admin.casts.edit',cast.id)">Edit</ButtonLink>
+                                            <ButtonLink class="bg-red-500 hover:bg-red-700" :link="route('admin.casts.destroy', cast.id)" method="delete"
+                                                as="button" type="button">Delete</ButtonLink>
+                                        </div>
+                                    </TableData>
+                                </TableRow>
+                            </Table>
                             <div class="m-2 p-2">
                                 <Pagination :links="casts.links" />
                             </div>
@@ -103,6 +92,11 @@
 <script setup>
     import AdminLayout from '../../Layouts/AdminLayout.vue';
     import Pagination from '../../Components/Pagination.vue';
+    import Table from "@/Components/Table";
+    import TableData from "@/Components/TableData";
+    import TableHead from "@/Components/TableHead";
+    import TableRow from "@/Components/TableRow";
+    import ButtonLink from "@/Components/ButtonLink";
     import {
         Link
     } from '@inertiajs/inertia-vue3';
@@ -142,10 +136,12 @@
         });
     }
 
-    function generateCast(){
-      Inertia.post("/admin/casts",{castTMDBId:castTMDBId.value},{
-          onFinish: () => castTMDBId.value = "",
-      });
+    function generateCast() {
+        Inertia.post("/admin/casts", {
+            castTMDBId: castTMDBId.value
+        }, {
+            onFinish: () => castTMDBId.value = "",
+        });
     }
 
 </script>
