@@ -49,4 +49,27 @@ class CastController extends Controller
                             return Redirect::back()->with('flash.banner','Api Error .');
                         }
     }
+
+    public function edit(Cast $cast)
+    {
+        return Inertia::render('Casts/edit',[
+            'cast'=>$cast
+        ]);
+    }
+
+    public function update(Cast $cast)
+    {
+        $validated = Request::validate([
+            'name'=> 'required',
+            'poster_path'=>'required'
+        ]);
+        $cast->update($validated);
+        return Redirect::route('admin.casts.index')->with('flash.banner','Cast Updated .');
+    }
+
+    public function destroy(Cast $cast)
+    {
+        $cast->delete();
+        return Redirect::route('admin.casts.index')->with('flash.banner','Cast Deleted .')->with('flash.bannerStyle','danger');
+    }
 }
